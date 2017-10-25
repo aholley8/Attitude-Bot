@@ -5,4 +5,6 @@ Some lines have been edited for user privacy
 
 The bot was written using Python
 
-
+Guild: Attitude
+Realm: Arthas-US
+Maintained by: Alex Holley
