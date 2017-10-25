@@ -1,14 +1,3 @@
-# TO ADD:
-#Febreezus: !fights
-#Febreezus: We have a website?
-#Febreezus: !info
-#Febreezus: !officers
-#Febreezus: !raid for raid info
-#Febreezus: Fights = video list for strategy
-#Febreezus: Info = guild site, whatever else
-#Febreezus: Officers = list of officers and discord names as well as roles played
-
-
 import discord
 import asyncio
 import json
@@ -18,15 +7,7 @@ from math import floor
 from affix import affixes
 
 client = discord.Client()
-officersID = [
-    '204420413814472704', #Alex
-    '229757511715127296', #Sammy
-    '90170201890394112',  #Nate
-    '216036936433795084', #Caleb
-    '218079956888977409', #Bruise
-    '187392035890659328', #Gummy
-    '229981371928412160', #Kyo
-]
+officersID = []
 
 
 @client.event
@@ -47,18 +28,19 @@ async def on_message(message):
             '\n!invasion - Displays time until end of current invasion, or until start of next invasion```'
             )
 
-# Available in Lads Channel
+## Available in Lads Channel
+# This should be cleaned up some
     if message.channel.name == 'lads':
         if message.content.startswith('!up'):
             for x in officersID:
                 # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('245634401046626305'))
+                await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
             await client.delete_message(message)
 
         elif message.content.startswith('!down'):
             for x in officersID:
                 # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
+                await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
             await client.delete_message(message)
 
 
@@ -69,15 +51,6 @@ async def on_message(message):
         logs = urllib.request.urlopen('https://www.warcraftlogs.com/v1/reports/guild/Attitude/Arthas/us?api_key=83cd4d911aecbd720692c99e4eda5e35')
         ljdata = json.load(logs)
         await client.send_message(message.channel, 'Guild Page: https://www.warcraftlogs.com/guilds/214323\nLatest Log: https://www.warcraftlogs.com/reports/' + str(ljdata[len(ljdata) - 1]['id']))
-        
-    #New and improved thonking! Now with Punishments!!!!!!!!!! >:V
-#    elif message.content.startswith('!thonking'):
-#        await client.delete_message(message)
-#        if message.author.id == '204420413814472704':
-#            await client.send_message(message.channel, '<:thonking:329863443790299137>')
-#        else:
-#            await client.move_member(message.author, client.get_channel('245634803137904640'))
-#            await client.send_message(message.channel, str(message.author) + ' has been punished. >:)')
 
     # Lists current week affixes, as well as next week's affixes
     elif message.content.startswith('!affix'):
