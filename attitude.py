@@ -7,15 +7,7 @@ from math import floor
 from affix import affixes
 
 client = discord.Client()
-officersID = [
-    '204420413814472704', #Alex
-    '229757511715127296', #Sammy
-    '90170201890394112',  #Nate
-    '216036936433795084', #Caleb
-    '218079956888977409', #Bruise
-    '187392035890659328', #Gummy
-    '229981371928412160', #Kyo
-]
+officersID = []
 
 
 @client.event
@@ -39,18 +31,19 @@ async def on_message(message):
             '\n!stop - ITS TIME TO STOP.```'
             )
 
-# Available in Lads Channel
+## Available in Lads Channel
+# This should be cleaned up some
     if message.channel.name == 'lads':
         if message.content.startswith('!up'):
             for x in officersID:
                 # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('245634401046626305'))
+                await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
             await client.delete_message(message)
 
         elif message.content.startswith('!down'):
             for x in officersID:
                 # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
+                await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
             await client.delete_message(message)
 
 
