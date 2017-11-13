@@ -1,14 +1,3 @@
-# TO ADD:
-#Febreezus: !fights
-#Febreezus: We have a website?
-#Febreezus: !info
-#Febreezus: !officers
-#Febreezus: !raid for raid info
-#Febreezus: Fights = video list for strategy
-#Febreezus: Info = guild site, whatever else
-#Febreezus: Officers = list of officers and discord names as well as roles played
-
-
 import discord
 import asyncio
 import json
@@ -39,12 +28,15 @@ async def on_ready():
 @client.event
 async def on_message(message):
 
-    if message.content.startswith('!commands'):
+    if message.content.startswith('!help'):
         await client.send_message(message.channel, '```Available commands for this Channel:' 
             '\n!logs - Guild Warcraft Logs page' 
             '\n!affix - List of Affixes for this week and next week'
             '\n!addons - Required/Suggested addons for raiding'
-            '\n!invasion - Displays time until end of current invasion, or until start of next invasion```'
+            '\n!invasion - Displays time until end of current invasion, or until start of next invasion'
+            '\n!stream - List of guildies that stream.'
+            '\n!bloods - Website that lists highest value for blood-bought items.'
+            '\n!stop - ITS TIME TO STOP.```'
             )
 
 # Available in Lads Channel
@@ -64,35 +56,31 @@ async def on_message(message):
 
 ## Available in General Channel
 
+    elif message.content.startswith('!name'):
+        #await client.send_message(message.channel, message.author.id)
+        gen = client.get_all_members()
+        for x in gen:
+            #await client.send_message(message.channel, 'Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
+            #print('Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
+            if x.name == 'Tuggy':
+                await client.send_message(message.channel, 'Hello Tuggy :)')
+
+
     # List guild warcraft log page, and latest log
     elif message.content.startswith('!logs'):
         logs = urllib.request.urlopen('https://www.warcraftlogs.com/v1/reports/guild/Attitude/Arthas/us?api_key=83cd4d911aecbd720692c99e4eda5e35')
         ljdata = json.load(logs)
         await client.send_message(message.channel, 'Guild Page: https://www.warcraftlogs.com/guilds/214323\nLatest Log: https://www.warcraftlogs.com/reports/' + str(ljdata[len(ljdata) - 1]['id']))
-        
-    #New and improved thonking! Now with Punishments!!!!!!!!!! >:V
-#    elif message.content.startswith('!thonking'):
-#        await client.delete_message(message)
-#        if message.author.id == '204420413814472704':
-#            await client.send_message(message.channel, '<:thonking:329863443790299137>')
-#        else:
-#            await client.move_member(message.author, client.get_channel('245634803137904640'))
-#            await client.send_message(message.channel, str(message.author) + ' has been punished. >:)')
 
     # Lists current week affixes, as well as next week's affixes
     elif message.content.startswith('!affix'):
         d1 = datetime(2017, 3, 28)
-        d2 = datetime.today()
-
-        tuesday1 = (d1 - timedelta(days=d1.weekday()-1))
-        tuesday2 = (d2 - timedelta(days=d2.weekday()))
-
-
-        currentAffix = affixes[floor(((tuesday2 - tuesday1).days / 7) % 12)]
-        nextAffix = affixes[floor(((tuesday2 - tuesday1).days / 7) % 12) + 1]
+        d2 = datetime.now()
+        
+        currentAffix = affixes[floor(((d2 - d1).days / 7) % 12)]
+        nextAffix = affixes[floor((((d2 - d1).days / 7) + 1) % 12)]
 
         output = 'This weeks affixes are: {}, {}, {}\nNext weeks affixes are: {}, {}, {}'.format(currentAffix[0], currentAffix[1], currentAffix[2],nextAffix[0], nextAffix[1], nextAffix[2])
-
         await client.send_message(message.channel, output)
 
     # Lists required addons for raiding
@@ -105,7 +93,7 @@ async def on_message(message):
 
     # Shows current invasion status, and time until end or next invasion
     elif message.content.startswith('!invasion'):
-        #start = Mon july 10 2017 @ 7.30pm EST
+        #start = Mon july 10 2017 @ 6.30pm CST
         start = datetime(2017, 7, 10, 18, 30)
 
         now = datetime.now()
@@ -132,9 +120,23 @@ async def on_message(message):
                 else:
                     enabled = True
 
+    #STREAM - as stated, lists streams
+    elif message.content.startswith('!stream'):
+        await client.send_message(message.channel,"Guildies that stream:\nTuggy: <https://www.twitch.tv/definitelynottuggy>\nGummy: <https://www.twitch.tv/TheGumSpot>\nNightzwatch: <https://www.twitch.tv/wootwookerz>\nSicklikeney: <https://www.twitch.tv/chyaboineymar>\nBruise: <https://www.twitch.tv/bruise116>\nMessage Tuggy to add yours!")
+
+
+    #BLOOD - website that lists highest selling blood-bought item
+    elif message.content.startswith('!blood'):
+        await client.send_message(message.channel,"<https://rodent.io/blood-money/arthas>")
+
+    # Time To STOP - links FilthyFrank's Time To Stop video
+    elif message.content.startswith('!stop'):
+        await client.send_message(message.channel,"https://www.youtube.com/watch?v=2k0SmqbBIpQ")
+
 
 #END IF
 
 client.run('MzMyNjg1MzA2MDQwMDI1MTEw.DEUqXw.6Sdm3v1a0QK535FLlm3yCOwDxFM')
 
 #END FILE
+
