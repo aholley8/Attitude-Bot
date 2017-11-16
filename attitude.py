@@ -19,7 +19,12 @@ officersID = [
 #'187392035890659328', #Gummy
 #'229981371928412160', #Kyo
 
-
+## IDs for Attitude
+# Server 
+## Voice
+# Lads 245634401046626305
+# Raid 246053446287884298
+## Roles
 
 
 @client.event
