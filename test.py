@@ -1,51 +1,86 @@
+import discord
+import asyncio
+import json
+import urllib.request
+import random
 from datetime import datetime, timedelta
-# DATETIME TEST FILE
+from math import floor
+from affix import affixes
 
-now = datetime.now()
-print(now)
-
-#print(now.strftime("%B %d, %Y"))
-print(now.weekday())
-
-#print(str(now.time()).split('.',2)[0])
-
-if (now.weekday()<3) and (now.hour<20):
-    print("RAID NIGHT!")
-    print('Time until raid: ' + str(datetime(now.year, now.month, now.day, 20) - now).split('.',2)[0])    
+client = discord.Client()
+officersID = ['204420413814472704']
 
 
+@client.event
+async def on_ready():
+    print('Logged in as')
+    print(client.user.name)
+    print(client.user.id)
+    print('------')
 
-#--------------------------------------------------------------------------------
-#start = Mon july 10 2017 @ 7.30pm EST
-#start = datetime(2017, 7, 10, 19, 30)
-#d1 = datetime(2017, 3, 28)
-#d2 = datetime.today()
-#tuesday1 = (d1 - timedelta(days=d1.weekday()-1))
-#tuesday2 = (d2 - timedelta(days=d2.weekday()))
-#currentAffix = affixes[floor(((tuesday2 - tuesday1).days / 7) % 12)]
-#nextAffix = affixes[floor(((tuesday2 - tuesday1).days / 7) % 12) + 1]
+@client.event
+async def on_message(message):
 
-#--------------------------------------------------------------------------------
-# Check to see if an invasion is up or not
-#loop = True
-#enabled = True
-#while loop:
-#    if enabled:
-#        start = start + timedelta(hours=6)
-#        if now < start: # Exits loop, invasion is happening
-#            loop = False
-#            nexttime = start - now
-#            print("There is an invasion active now!\nTime left: " + str(nexttime).split('.',2)[0])
-#        else:
-#            enabled = False
-#    else:
-#        start = start + timedelta(hours=12, minutes=30)
-#        if now < start: # Exits loop, invasion not happening
-#            loop = False
-#            nexttime = start-now
-#            print("There is no invasion active.\nTime until next invasion: " + str(nexttime).split('.',2)[0])
-#            
-#        else:
-#            enabled = True
+    if message.content.startswith('!thelp'):
+        await client.send_message(message.channel, '```Available TEST commands for this Channel:' 
+            '\n!tselect - Test version of random member select.'
+            '\n\tThis randomly selects a member from a pre-defined channel'
+            '\n!tofficer - test version of officer only commands'
+            '\n\tThis command only works for users with a certain role```'
+            )
 
+## Available to specified Roles ONLY
+# 380763363908648963 - Test_Role
+ 
+    #if '380763363908648963' in (y.id for y in message.author.roles):
+
+        ## These are the test version commands
+        # await client.send_message(message.channel, "```Officer Command Invoked```")
+    if (message.content.startswith('!tofficer')) and ('380763363908648963' in (y.id for y in message.author.roles)) :
+        await client.delete_message(message)
+        await client.send_message(message.channel, '```Confirmed```')
+        ## Test version END
+
+    elif (message.content.startswith('!tup')) and ('380763363908648963' in (y.id for y in message.author.roles)):
+        for x in officersID:
+            # Moves everyone in officersID list to Officer channel 
+            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+        await client.delete_message(message)
+
+    elif (message.content.startswith('!tdown')) and ('380763363908648963' in (y.id for y in message.author.roles)) :
+        for x in officersID:
+            # Moves everyone in officersID list to Raid channel 
+            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+        await client.delete_message(message)
+
+
+## Available to all Roles :)
+
+    elif message.content.startswith('!tselect') and ('380763363908648963' in (y.id for y in message.author.roles)):
+        #await client.send_message(message.channel, message.author.id)  ## Debugging
+        members = client.get_channel('336532282678575106').voice_members  
+        # returns a list of members in the specified channel
+        print('Length of members list: ' + str(len(members)))  ## Debugging
+        # Check to see if there are users before trying to select one
+        if (len(members) > 0):
+            ran_mem = random.randint(0,len(members)-1)
+            print('ran_mem: ' + str(ran_mem))  ## Debugging
+            print(members[ran_mem].id)  ## Debugging
+            if (members[ran_mem].id not in officersID):
+                print('chosen: ' + str(members[ran_mem].name)) 
+                await client.send_message(message.channel, str(members[ran_mem].name)+' has been choosen!')
+                officersID = []
+                officersID.append(str(members[ran_mem].id))
+
+        #for x in gen.voice_members:
+            #await client.send_message(message.channel, 'Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
+            #print('Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
+            #if x.name == 'Tuggy':
+                #await client.send_message(message.channel, 'Hello Tuggy :)')
+
+#END IF
+
+client.run('MzgwNDMyMjQ5MzgxOTc4MTIy.DO4g_Q.6Up4UAH6VNhCnSB-osdRiQVYhM0')
+
+#END FILE
 
