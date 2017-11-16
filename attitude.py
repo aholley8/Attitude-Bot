@@ -44,32 +44,31 @@ async def on_message(message):
             )
 
 # Available in Lads Channel
-    if message.channel.name == 'lads':
-        if message.content.startswith('!up'):
-            for x in officersID:
-                # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('245634401046626305'))
-            await client.delete_message(message)
+    if (message.content.startswith('!up')) and ('380763363908648963' in (y.id for y in message.author.roles)):
+        for x in officersID:
+            # Moves everyone in officersID list to Officer channel 
+            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+        await client.delete_message(message)
 
-        elif message.content.startswith('!down'):
-            for x in officersID:
-                # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
-            await client.delete_message(message)
-
+    elif (message.content.startswith('!down')) and ('380763363908648963' in (y.id for y in message.author.roles)) :
+        for x in officersID:
+            # Moves everyone in officersID list to Raid channel 
+            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+        await client.delete_message(message)
 
 ## Available in General Channel
-    elif message.content.startswith('!tselect'):
+    elif message.content.startswith('!select'):
         #await client.send_message(message.channel, message.author.id)
         members = client.get_channel('246053446287884298').voice_members  
         # returns a list of members in the specified channel
         print('Length of members list: ' + str(len(members)))
-        ran_mem = random.randint(0,len(members)-1)
-        print('ran_mem: ' + str(ran_mem))
-        print(members[ran_mem].id)
-        if ((len(members) >= 1) and (members[ran_mem].id not in officersID)):
-            print('chosen: ' + str(members[ran_mem].name)) 
-            await client.send_message(message.channel, str(members[ran_mem].display_name)+' has been choosen!')
+        if (len(members) > 0):
+            ran_mem = random.randint(0,len(members)-1)
+            #print('ran_mem: ' + str(ran_mem))  ## Debugging
+            #print(members[ran_mem].id)  ## Debugging
+            if (members[ran_mem].id not in officersID):
+                print('chosen: ' + str(members[ran_mem].name)) 
+                await client.send_message(message.channel, str(members[ran_mem].name)+' has been choosen!')
 
     #elif message.content.startswith('!name'):
         #await client.send_message(message.channel, message.author.id)
