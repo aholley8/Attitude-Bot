@@ -47,13 +47,13 @@ async def on_message(message):
     if (message.content.startswith('!up')) and ('380763363908648963' in (y.id for y in message.author.roles)):
         for x in officersID:
             # Moves everyone in officersID list to Officer channel 
-            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+            await client.move_member(client.get_server('').get_member(x), client.get_channel('245634401046626305'))
         await client.delete_message(message)
 
     elif (message.content.startswith('!down')) and ('380763363908648963' in (y.id for y in message.author.roles)) :
         for x in officersID:
             # Moves everyone in officersID list to Raid channel 
-            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+            await client.move_member(client.get_server('').get_member(x), client.get_channel('246053446287884298'))
         await client.delete_message(message)
 
 ## Available in General Channel
