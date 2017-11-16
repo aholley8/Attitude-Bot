@@ -2,12 +2,24 @@ import discord
 import asyncio
 import json
 import urllib.request
+import random
 from datetime import datetime, timedelta
 from math import floor
 from affix import affixes
 
 client = discord.Client()
-officersID = []
+officersID = [
+    '204420413814472704', #Alex
+    '229757511715127296', #Sammy
+    '218079956888977409', #Bruise
+]
+
+#'90170201890394112',  #Nate
+#'216036936433795084', #Caleb
+#'187392035890659328', #Gummy
+#'229981371928412160', #Kyo
+
+
 
 
 @client.event
@@ -31,32 +43,42 @@ async def on_message(message):
             '\n!stop - ITS TIME TO STOP.```'
             )
 
-## Available in Lads Channel
-# This should be cleaned up some
+# Available in Lads Channel
     if message.channel.name == 'lads':
         if message.content.startswith('!up'):
             for x in officersID:
                 # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('245634401046626305'))
             await client.delete_message(message)
 
         elif message.content.startswith('!down'):
             for x in officersID:
                 # Moves everyone in officersID list to Officer channel 
-                await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+                await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
             await client.delete_message(message)
 
 
 ## Available in General Channel
-
-    elif message.content.startswith('!name'):
+    elif message.content.startswith('!tselect'):
         #await client.send_message(message.channel, message.author.id)
-        gen = client.get_all_members()
-        for x in gen:
+        members = client.get_channel('246053446287884298').voice_members  
+        # returns a list of members in the specified channel
+        print('Length of members list: ' + str(len(members)))
+        ran_mem = random.randint(0,len(members)-1)
+        print('ran_mem: ' + str(ran_mem))
+        print(members[ran_mem].id)
+        if ((len(members) >= 1) and (members[ran_mem].id not in officersID)):
+            print('chosen: ' + str(members[ran_mem].name)) 
+            await client.send_message(message.channel, str(members[ran_mem].display_name)+' has been choosen!')
+
+    #elif message.content.startswith('!name'):
+        #await client.send_message(message.channel, message.author.id)
+        #gen = client.get_all_members()
+        #for x in gen:
             #await client.send_message(message.channel, 'Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
             #print('Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
-            if x.name == 'Tuggy':
-                await client.send_message(message.channel, 'Hello Tuggy :)')
+            #if x.name == 'Tuggy':
+                #await client.send_message(message.channel, 'Hello Tuggy :)')
 
 
     # List guild warcraft log page, and latest log
