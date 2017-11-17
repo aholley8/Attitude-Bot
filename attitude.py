@@ -20,12 +20,12 @@ officersID = [
 #'229981371928412160', #Kyo
 
 ## IDs for Attitude
-# Server 
+# Server 245634401046626304 
 ## Voice
 # Lads 245634401046626305
 # Raid 246053446287884298
 ## Roles
-
+# Officer 245636355311403008
 
 @client.event
 async def on_ready():
@@ -49,16 +49,16 @@ async def on_message(message):
             )
 
 # Available in Lads Channel
-    if (message.content.startswith('!up')) and ('380763363908648963' in (y.id for y in message.author.roles)):
+    if (message.content.startswith('!up')) and ('245636355311403008' in (y.id for y in message.author.roles)):
         for x in officersID:
             # Moves everyone in officersID list to Officer channel 
-            await client.move_member(client.get_server('').get_member(x), client.get_channel('245634401046626305'))
+            await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('245634401046626305'))
         await client.delete_message(message)
 
-    elif (message.content.startswith('!down')) and ('380763363908648963' in (y.id for y in message.author.roles)) :
+    elif (message.content.startswith('!down')) and ('245636355311403008' in (y.id for y in message.author.roles)) :
         for x in officersID:
             # Moves everyone in officersID list to Raid channel 
-            await client.move_member(client.get_server('').get_member(x), client.get_channel('246053446287884298'))
+            await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
         await client.delete_message(message)
 
 ## Available in General Channel
