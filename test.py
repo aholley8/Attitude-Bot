@@ -20,6 +20,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global officersID
 
     if message.content.startswith('!thelp'):
         await client.send_message(message.channel, '```Available TEST commands for this Channel:' 
@@ -44,19 +45,22 @@ async def on_message(message):
     elif (message.content.startswith('!tup')) and ('380763363908648963' in (y.id for y in message.author.roles)):
         for x in officersID:
             # Moves everyone in officersID list to Officer channel 
-            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+            await client.move_member(client.get_server('336532282678575104').get_member(x), client.get_channel('336532282678575106'))
         await client.delete_message(message)
 
     elif (message.content.startswith('!tdown')) and ('380763363908648963' in (y.id for y in message.author.roles)) :
         for x in officersID:
             # Moves everyone in officersID list to Raid channel 
-            await client.move_member(client.get_server('').get_member(x), client.get_channel(''))
+            await client.move_member(client.get_server('336532282678575104').get_member(x), client.get_channel('380762592400113665'))
         await client.delete_message(message)
 
 
 ## Available to all Roles :)
 
     elif message.content.startswith('!tselect') and ('380763363908648963' in (y.id for y in message.author.roles)):
+        officersID = ['204420413814472704']
+        print('officersID before select:')
+        print(officersID)
         #await client.send_message(message.channel, message.author.id)  ## Debugging
         members = client.get_channel('336532282678575106').voice_members  
         # returns a list of members in the specified channel
@@ -69,8 +73,8 @@ async def on_message(message):
             if (members[ran_mem].id not in officersID):
                 print('chosen: ' + str(members[ran_mem].name)) 
                 await client.send_message(message.channel, str(members[ran_mem].name)+' has been choosen!')
-                officersID = []
                 officersID.append(str(members[ran_mem].id))
+                print(officersID)
 
         #for x in gen.voice_members:
             #await client.send_message(message.channel, 'Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
