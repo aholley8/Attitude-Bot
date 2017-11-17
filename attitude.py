@@ -36,6 +36,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global officersID
 
     if message.content.startswith('!help'):
         await client.send_message(message.channel, '```Available commands for this Channel:' 
@@ -48,8 +49,9 @@ async def on_message(message):
             '\n!stop - ITS TIME TO STOP.```'
             )
 
-# Available in Lads Channel
+## Available to Officers Only
     if (message.content.startswith('!up')) and ('245636355311403008' in (y.id for y in message.author.roles)):
+        print(officersID)
         for x in officersID:
             # Moves everyone in officersID list to Officer channel 
             await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('245634401046626305'))
@@ -61,19 +63,26 @@ async def on_message(message):
             await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
         await client.delete_message(message)
 
-## Available in General Channel
-    elif message.content.startswith('!select'):
-        #await client.send_message(message.channel, message.author.id)
+    elif message.content.startswith('!select') and ('245636355311403008' in (y.id for y in message.author.roles)):
+        officersID = ['204420413814472704','229757511715127296','218079956888977409']
+        print('officersID before select:')
+        print(officersID)
+        #await client.send_message(message.channel, message.author.id)  ## Debugging
         members = client.get_channel('246053446287884298').voice_members  
         # returns a list of members in the specified channel
-        print('Length of members list: ' + str(len(members)))
+        #print('Length of members list: ' + str(len(members)))  ## Debugging
+        # Check to see if there are users before trying to select one
         if (len(members) > 0):
             ran_mem = random.randint(0,len(members)-1)
             #print('ran_mem: ' + str(ran_mem))  ## Debugging
-            #print(members[ran_mem].id)  ## Debugging
+            print(members[ran_mem].id)  ## Debugging
             if (members[ran_mem].id not in officersID):
                 print('chosen: ' + str(members[ran_mem].name)) 
                 await client.send_message(message.channel, str(members[ran_mem].name)+' has been choosen!')
+                officersID.append(str(members[ran_mem].id))
+                print(officersID)
+                ran_mem = random.randint(0,len(members)-1)
+                
 
     #elif message.content.startswith('!name'):
         #await client.send_message(message.channel, message.author.id)
@@ -84,6 +93,12 @@ async def on_message(message):
             #if x.name == 'Tuggy':
                 #await client.send_message(message.channel, 'Hello Tuggy :)')
 
+    elif message.content.startswith('!select') and ('245636355311403008' in (y.id for y in message.author.roles)):
+        officersID = ['204420413814472704','229757511715127296','218079956888977409']
+        #await client.send_message(message.channel,'```Done```')
+        await client.delete_message(message)
+
+## Available to everyone else
 
     # List guild warcraft log page, and latest log
     elif message.content.startswith('!logs'):
