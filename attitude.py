@@ -93,7 +93,7 @@ async def on_message(message):
             #if x.name == 'Tuggy':
                 #await client.send_message(message.channel, 'Hello Tuggy :)')
 
-    elif message.content.startswith('!select') and ('245636355311403008' in (y.id for y in message.author.roles)):
+    elif message.content.startswith('!reset') and ('245636355311403008' in (y.id for y in message.author.roles)):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
         #await client.send_message(message.channel,'```Done```')
         await client.delete_message(message)
