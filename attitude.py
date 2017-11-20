@@ -50,7 +50,18 @@ async def on_message(message):
             )
 
 ## Available to Officers Only
-    if (message.content.startswith('!up')) and ('245636355311403008' in (y.id for y in message.author.roles)):
+
+    if (message.content.startswith('!officer')) and ('245636355311403008' in (y.id for y in message.author.roles)): 
+        await client.send_message(client.get_channel('245637944453365761'), '```Available commands for Officers:' 
+            '\n!up - moves Loot Council up to Officer chat' 
+            '\n!down - moves Loot Coucil back down to Raid Chat'
+            '\n!select - selects a member from current voice channel and adds them to Loot Council'
+            '\n!reset - Clears and resets Loot Council.```'
+            )
+
+# '245637944453365761'
+
+    if (message.content.startswith('!up')) and ('245636355311403008' in (y.id for y in message.author.roles)): 
         print(officersID)
         for x in officersID:
             # Moves everyone in officersID list to Officer channel 
@@ -63,26 +74,37 @@ async def on_message(message):
             await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
         await client.delete_message(message)
 
+
+ 
     elif message.content.startswith('!select') and ('245636355311403008' in (y.id for y in message.author.roles)):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
         print('officersID before select:')
         print(officersID)
         #await client.send_message(message.channel, message.author.id)  ## Debugging
-        members = client.get_channel('246053446287884298').voice_members  
+        #members = client.get_channel('336532282678575106').voice_members  
+        members = message.author.voice.voice_channel.voice_members
         # returns a list of members in the specified channel
-        #print('Length of members list: ' + str(len(members)))  ## Debugging
+        print('Length of members list: ' + str(len(members)))  ## Debugging
         # Check to see if there are users before trying to select one
         if (len(members) > 0):
             ran_mem = random.randint(0,len(members)-1)
-            #print('ran_mem: ' + str(ran_mem))  ## Debugging
-            print(members[ran_mem].id)  ## Debugging
-            if (members[ran_mem].id not in officersID):
-                print('chosen: ' + str(members[ran_mem].name)) 
-                await client.send_message(message.channel, str(members[ran_mem].name)+' has been choosen!')
-                officersID.append(str(members[ran_mem].id))
-                print(officersID)
-                ran_mem = random.randint(0,len(members)-1)
-                
+            # This loop will be active as long as the selected person is an officer
+            # it will keep getting a new random int to select a new person until the new person is
+            # not in officersID. If also includes a debugging print statement
+            while (members[ran_mem].id in officersID):
+                print('ran_mem: ' + str(ran_mem))               ## Debugging: print the current random int
+                print('chosen: ' + str(members[ran_mem].name))  ## Debugging: print who was chosen
+                ran_mem = random.randint(0,len(members)-1)     # get new random int
+            # Out of loop, selected member must NOT be in officerID already
+            await client.send_message(message.channel, str(members[ran_mem].name) + ' had been choosen!')
+            officersID.append(str(members[ran_mem].id))
+            print(officersID)   ## Debugging
+        # END IF
+
+    elif message.content.startswith('!reset') and ('245636355311403008' in (y.id for y in message.author.roles)):
+        officersID = ['204420413814472704','229757511715127296','218079956888977409']
+        await client.send_message(message.channel, '```Reset Complete```')
+        #print(officersID)
 
     #elif message.content.startswith('!name'):
         #await client.send_message(message.channel, message.author.id)
