@@ -62,19 +62,38 @@ async def on_message(message):
         print('officersID before select:')
         print(officersID)
         #await client.send_message(message.channel, message.author.id)  ## Debugging
-        members = client.get_channel('336532282678575106').voice_members  
+        #members = client.get_channel('336532282678575106').voice_members  
+        members = message.author.voice.voice_channel.voice_members
         # returns a list of members in the specified channel
         print('Length of members list: ' + str(len(members)))  ## Debugging
         # Check to see if there are users before trying to select one
         if (len(members) > 0):
             ran_mem = random.randint(0,len(members)-1)
-            print('ran_mem: ' + str(ran_mem))  ## Debugging
-            print(members[ran_mem].id)  ## Debugging
-            if (members[ran_mem].id not in officersID):
-                print('chosen: ' + str(members[ran_mem].name)) 
-                await client.send_message(message.channel, str(members[ran_mem].name)+' has been choosen!')
-                officersID.append(str(members[ran_mem].id))
-                print(officersID)
+            #print('ran_mem: ' + str(ran_mem))  ## Debugging
+            #print(members[ran_mem].id)  ## Debugging
+            #if (members[ran_mem].id not in officersID):
+                #print('chosen: ' + str(members[ran_mem].name)) 
+                #await client.send_message(message.channel, str(members[ran_mem].name)+' has been choosen!')
+                #officersID.append(str(members[ran_mem].id))
+                #print(officersID)
+
+            # This loop will be active as long as the selected person is an officer
+            # it will keep getting a new random int to select a new person until the new person is
+            # not in officersID. If also includes a debugging print statement
+            while (members[ran_mem].id in officersID):
+                print('ran_mem: ' + str(ran_mem))               ## Debugging: print the current random int
+                print('chosen: ' + str(members[ran_mem].name))  ## Debugging: print who was chosen
+                ran_mem = random.randint(0,len(members)-1)     # get new random int
+            # Out of loop, selected member must NOT be in officerID already
+            await client.send_message(message.channel, str(members[ran_mem].name) + ' had been choosen!')
+            officersID.append(str(members[ran_mem].id))
+            print(officersID)   ## Debugging
+        # END IF
+
+    elif message.content.startswith('!treset') and ('380763363908648963' in (y.id for y in message.author.roles)):
+        officersID = ['204420413814472704']
+        await client.send_message(message.channel, '```Reset Complete```')
+        print(officersID)
 
         #for x in gen.voice_members:
             #await client.send_message(message.channel, 'Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
