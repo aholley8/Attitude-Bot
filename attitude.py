@@ -1,4 +1,4 @@
-import discord
+mmport discord
 import asyncio
 import json
 import urllib.request
@@ -49,7 +49,9 @@ async def on_message(message):
             '\n!stop - ITS TIME TO STOP.```'
             )
 
+# ----------------------------------------------------------------------------------------
 ## Available to Officers Only
+# ----------------------------------------------------------------------------------------
 
     if (message.content.startswith('!officer')) and ('245636355311403008' in (y.id for y in message.author.roles)): 
         await client.send_message(client.get_channel('245637944453365761'), '```Available commands for Officers:' 
@@ -59,6 +61,7 @@ async def on_message(message):
             '\n!reset - Clears and resets Loot Council.```'
             )
 
+# Lads text channel
 # '245637944453365761'
 
     if (message.content.startswith('!up')) and ('245636355311403008' in (y.id for y in message.author.roles)): 
@@ -106,21 +109,14 @@ async def on_message(message):
         await client.send_message(message.channel, '```Reset Complete```')
         #print(officersID)
 
-    #elif message.content.startswith('!name'):
-        #await client.send_message(message.channel, message.author.id)
-        #gen = client.get_all_members()
-        #for x in gen:
-            #await client.send_message(message.channel, 'Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
-            #print('Discord RealID: '+ str(x) + ' Discord Identifier: ' + str(x.id) + ' Username: ' + str(x.name))
-            #if x.name == 'Tuggy':
-                #await client.send_message(message.channel, 'Hello Tuggy :)')
-
     elif message.content.startswith('!reset') and ('245636355311403008' in (y.id for y in message.author.roles)):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
         #await client.send_message(message.channel,'```Done```')
         await client.delete_message(message)
 
+# ----------------------------------------------------------------------------------------
 ## Available to everyone else
+# ----------------------------------------------------------------------------------------
 
     # List guild warcraft log page, and latest log
     elif message.content.startswith('!logs'):
