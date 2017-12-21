@@ -1,4 +1,4 @@
-mmport discord
+import discord
 import asyncio
 import json
 import urllib.request
