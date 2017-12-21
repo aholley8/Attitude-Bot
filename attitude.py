@@ -99,7 +99,7 @@ async def on_message(message):
                 print('chosen: ' + str(members[ran_mem].name))  ## Debugging: print who was chosen
                 ran_mem = random.randint(0,len(members)-1)     # get new random int
             # Out of loop, selected member must NOT be in officerID already
-            await client.send_message(message.channel, str(members[ran_mem].name) + ' had been choosen!')
+            await client.send_message(message.channel, str(members[ran_mem].nick) + ' has been choosen!')
             officersID.append(str(members[ran_mem].id))
             print(officersID)   ## Debugging
         # END IF
