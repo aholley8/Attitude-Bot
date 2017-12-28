@@ -20,12 +20,15 @@ officersID = [
 #'229981371928412160', #Kyo
 
 ## IDs for Attitude
-# Server 245634401046626304 
-## Voice
-# Lads 245634401046626305
-# Raid 246053446287884298
+server_id = '245634401046626304' 
+## Voice Channels
+lads_voice = '396058528600817674'
+raid_voice = '246053446287884298'
 ## Roles
-# Officer 245636355311403008
+officer_role = '245636355311403008'
+## Text Channel
+lads_text = '396058468479664138'
+
 
 @client.event
 async def on_ready():
@@ -39,7 +42,7 @@ async def on_message(message):
     global officersID
 
     if message.content.startswith('!help'):
-        await client.send_message(message.channel, '```Available commands for this Channel:' 
+        await client.send_message(message.channel, '```Available commands:' 
             '\n!logs - Guild Warcraft Logs page' 
             '\n!affix - List of Affixes for this week and next week'
             '\n!addons - Required/Suggested addons for raiding'
@@ -53,8 +56,8 @@ async def on_message(message):
 ## Available to Officers Only
 # ----------------------------------------------------------------------------------------
 
-    if (message.content.startswith('!officer')) and ('245636355311403008' in (y.id for y in message.author.roles)): 
-        await client.send_message(client.get_channel('245637944453365761'), '```Available commands for Officers:' 
+    if (message.content.startswith('!officer')) and (officer_role in (y.id for y in message.author.roles)): 
+        await client.send_message(client.get_channel(lads_text), '```Available commands for Officers:' 
             '\n!up - moves Loot Council up to Officer chat' 
             '\n!down - moves Loot Coucil back down to Raid Chat'
             '\n!select - selects a member from current voice channel and adds them to Loot Council'
@@ -64,22 +67,22 @@ async def on_message(message):
 # Lads text channel
 # '245637944453365761'
 
-    if (message.content.startswith('!up')) and ('245636355311403008' in (y.id for y in message.author.roles)): 
+    if (message.content.startswith('!up')) and (officer_role in (y.id for y in message.author.roles)): 
         print(officersID)
         for x in officersID:
             # Moves everyone in officersID list to Officer channel 
-            await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('245634401046626305'))
+            await client.move_member(client.get_server(server_id).get_member(x), client.get_channel(lads_voice))
         await client.delete_message(message)
 
-    elif (message.content.startswith('!down')) and ('245636355311403008' in (y.id for y in message.author.roles)) :
+    elif (message.content.startswith('!down')) and (officer_role in (y.id for y in message.author.roles)) :
         for x in officersID:
             # Moves everyone in officersID list to Raid channel 
-            await client.move_member(client.get_server('245634401046626304').get_member(x), client.get_channel('246053446287884298'))
+            await client.move_member(client.get_server(server_id).get_member(x), client.get_channel(raid_voice))
         await client.delete_message(message)
 
 
  
-    elif message.content.startswith('!select') and ('245636355311403008' in (y.id for y in message.author.roles)):
+    elif message.content.startswith('!select') and (officer_role in (y.id for y in message.author.roles)):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
         print('officersID before select:')
         print(officersID)
@@ -105,12 +108,7 @@ async def on_message(message):
             print(officersID)   ## Debugging
         # END IF
 
-    elif message.content.startswith('!reset') and ('245636355311403008' in (y.id for y in message.author.roles)):
-        officersID = ['204420413814472704','229757511715127296','218079956888977409']
-        await client.send_message(message.channel, '```Reset Complete```')
-        #print(officersID)
-
-    elif message.content.startswith('!reset') and ('245636355311403008' in (y.id for y in message.author.roles)):
+    elif message.content.startswith('!reset') and (officer_role in (y.id for y in message.author.roles)):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
         #await client.send_message(message.channel,'```Done```')
         await client.delete_message(message)
