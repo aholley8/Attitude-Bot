@@ -68,7 +68,7 @@ async def on_message(message):
 # '245637944453365761'
 
     if (message.content.startswith('!up')) and (officer_role in (y.id for y in message.author.roles)): 
-        print(officersID)
+        #print(officersID)
         for x in officersID:
             # Moves everyone in officersID list to Officer channel 
             await client.move_member(client.get_server(server_id).get_member(x), client.get_channel(lads_voice))
