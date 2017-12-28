@@ -189,7 +189,10 @@ async def on_message(message):
 
 #END IF
 
-client.run('MzMyNjg1MzA2MDQwMDI1MTEw.DEUqXw.6Sdm3v1a0QK535FLlm3yCOwDxFM')
+file = open("token.json",'r')
+tokenObj = json.load(file)
+file.close()
+client.run(tokenObj['token'])
 
 #END FILE
 
