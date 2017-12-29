@@ -147,7 +147,8 @@ async def on_message(message):
         #start = Mon july 10 2017 @ 6.30pm CST
         start = datetime(2017, 7, 10, 18, 30)
 
-        now = datetime.now()
+        # remove the timedelta when DST is over :P
+        now = datetime.now()+timedelta(hours=1)
         loop = True
         enabled = True
 
