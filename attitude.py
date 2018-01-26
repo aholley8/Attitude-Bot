@@ -1,3 +1,5 @@
+
+
 import discord
 import asyncio
 import json
@@ -6,8 +8,11 @@ import random
 from datetime import datetime, timedelta
 from math import floor
 from affix import affixes
+from dict import DictionaryReader
+
 
 client = discord.Client()
+
 officersID = [
     '204420413814472704', #Alex
     '229757511715127296', #Sammy
@@ -29,6 +34,7 @@ officer_role = '245636355311403008'
 ## Text Channel
 lads_text = '396058468479664138'
 
+prefix = '!'
 
 @client.event
 async def on_ready():
@@ -41,22 +47,32 @@ async def on_ready():
 async def on_message(message):
     global officersID
 
-    if message.content.startswith('!help'):
-        await client.send_message(message.channel, '```Available commands:' 
-            '\n!logs - Guild Warcraft Logs page' 
-            '\n!affix - List of Affixes for this week and next week'
-            '\n!addons - Required/Suggested addons for raiding'
-            '\n!invasion - Displays time until end of current invasion, or until start of next invasion'
-            '\n!stream - List of guildies that stream.'
-            '\n!bloods - Website that lists highest value for blood-bought items.'
-            '\n!stop - ITS TIME TO STOP.```'
-            )
+    # Ignore and messages made by the bot
+    if message.author == client.user:
+        return
+
+    # Ignore any message that does not have the prefix
+    if not message.content.startswith(prefix):
+        return
+
+    d = DictionaryReader()
+
+    # This list will contain the author's roles to check against later, only works in a server (ie not with PMs)
+    try:
+        roles = []
+        for role in message.author.roles:
+            roles.append(role.name)
+
+        print(roles)
+    except:
+        pass
+
 
 # ----------------------------------------------------------------------------------------
 ## Available to Officers Only
 # ----------------------------------------------------------------------------------------
 
-    if (message.content.startswith('!officer')) and (officer_role in (y.id for y in message.author.roles)): 
+    if (message.content.startswith(prefix+'officer')) and ('Officers' in roles): 
         await client.send_message(client.get_channel(lads_text), '```Available commands for Officers:' 
             '\n!up - moves Loot Council up to Officer chat' 
             '\n!down - moves Loot Coucil back down to Raid Chat'
@@ -67,15 +83,15 @@ async def on_message(message):
 # Lads text channel
 # '245637944453365761'
 
-    if (message.content.startswith('!up')) and (officer_role in (y.id for y in message.author.roles)): 
-        #print(officersID)
+    if (message.content.startswith(prefix+'up')) and ('Officers' in roles): 
+        print(officersID)
         for x in officersID:
-            print(officersID)
+            #print(officersID)
             # Moves everyone in officersID list to Officer channel 
             await client.move_member(client.get_server(server_id).get_member(x), client.get_channel(lads_voice))
         await client.delete_message(message)
 
-    elif (message.content.startswith('!down')) and (officer_role in (y.id for y in message.author.roles)) :
+    if (message.content.startswith(prefix+'down')) and ('Officers' in roles) :
         for x in officersID:
             # Moves everyone in officersID list to Raid channel 
             await client.move_member(client.get_server(server_id).get_member(x), client.get_channel(raid_voice))
@@ -83,7 +99,7 @@ async def on_message(message):
 
 
  
-    elif message.content.startswith('!select') and (officer_role in (y.id for y in message.author.roles)):
+    if message.content.startswith(prefix + 'select') and ('Officers' in roles):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
         print('officersID before select:')
         print(officersID)
@@ -109,9 +125,9 @@ async def on_message(message):
             print(officersID)   ## Debugging
         # END IF
 
-    elif message.content.startswith('!reset') and (officer_role in (y.id for y in message.author.roles)):
+    if message.content.startswith(prefix + 'reset') and ('Officers' in roles):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
-        #await client.send_message(message.channel,'```Done```')
+        print('LC reset')
         await client.delete_message(message)
 
 # ----------------------------------------------------------------------------------------
@@ -119,13 +135,13 @@ async def on_message(message):
 # ----------------------------------------------------------------------------------------
 
     # List guild warcraft log page, and latest log
-    elif message.content.startswith('!logs'):
+    if message.content.startswith(prefix + 'logs'):
         logs = urllib.request.urlopen('https://www.warcraftlogs.com/v1/reports/guild/Attitude/Arthas/us?api_key=83cd4d911aecbd720692c99e4eda5e35')
         ljdata = json.load(logs)
         await client.send_message(message.channel, 'Guild Page: https://www.warcraftlogs.com/guilds/214323\nLatest Log: https://www.warcraftlogs.com/reports/' + str(ljdata[len(ljdata) - 1]['id']))
-
+    
     # Lists current week affixes, as well as next week's affixes
-    elif message.content.startswith('!affix'):
+    if message.content.startswith(prefix + 'affix'):
         d1 = datetime(2017, 3, 28)
         d2 = datetime.now()
         
@@ -135,16 +151,9 @@ async def on_message(message):
         output = 'This weeks affixes are: {}, {}, {}\nNext weeks affixes are: {}, {}, {}'.format(currentAffix[0], currentAffix[1], currentAffix[2],nextAffix[0], nextAffix[1], nextAffix[2])
         await client.send_message(message.channel, output)
 
-    # Lists required addons for raiding
-    elif message.content.startswith('!addon'):
-        await client.send_message(message.channel, '\nRequired Addons:'
-            '\nBossMod of some kind:'
-            '\n\t\tDBM: <https://mods.curse.com/addons/wow/deadly-boss-mods>\n\t\tBigWigs: <https://mods.curse.com/addons/wow/big-wigs>'
-            '\nWeakAuras: <https://mods.curse.com/addons/wow/weakauras-2>'
-            '\nRCLootCouncil: <https://mods.curse.com/addons/wow/rclootcouncil>')
 
     # Shows current invasion status, and time until end or next invasion
-    elif message.content.startswith('!invasion'):
+    if message.content.startswith(prefix + 'invasion'):
         #start = Mon july 10 2017 @ 6.30pm CST
         start = datetime(2017, 7, 10, 18, 30)
 
@@ -172,20 +181,15 @@ async def on_message(message):
                     
                 else:
                     enabled = True
-
-    #STREAM - as stated, lists streams
-    elif message.content.startswith('!stream'):
-        await client.send_message(message.channel,"Guildies that stream:\nTuggy: <https://www.twitch.tv/definitelynottuggy>\nGummy: <https://www.twitch.tv/TheGumSpot>\nNightzwatch: <https://www.twitch.tv/wootwookerz>\nSicklikeney: <https://www.twitch.tv/chyaboineymar>\nBruise: <https://www.twitch.tv/bruise116>\nMessage Tuggy to add yours!")
-
-
-    #BLOOD - website that lists highest selling blood-bought item
-    elif message.content.startswith('!blood'):
-        await client.send_message(message.channel,"<https://rodent.io/blood-money/arthas>")
-
-    # Time To STOP - links FilthyFrank's Time To Stop video
-    elif message.content.startswith('!stop'):
-        await client.send_message(message.channel,"https://www.youtube.com/watch?v=2k0SmqbBIpQ")
-
+    try:
+        if message.content.startswith(prefix):
+            print(message.content)
+            terms = message.content[1:].split()
+            command = terms[0].lower()
+            msg = d.readDict(command)
+            await client.send_message(message.channel,msg)
+    except:
+        pass
 
 #END IF
 
