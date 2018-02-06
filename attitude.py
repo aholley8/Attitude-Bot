@@ -181,15 +181,15 @@ async def on_message(message):
                     
                 else:
                     enabled = True
-    try:
-        if message.content.startswith(prefix):
-            print(message.content)
-            terms = message.content[1:].split()
-            command = terms[0].lower()
-            msg = d.readDict(command)
+
+    if message.content.startswith(prefix):
+        print(message.content)
+        terms = message.content[1:].split()
+        command = terms[0].lower()
+        msg = d.readDict(command)
+        # this should check if the string is empty or not.
+        if msg:   
             await client.send_message(message.channel,msg)
-    except:
-        pass
 
 #END IF
 
