@@ -136,9 +136,9 @@ async def on_message(message):
 
     # List guild warcraft log page, and latest log
     if message.content.startswith(prefix + 'logs'):
-        logs = urllib.request.urlopen('https://www.warcraftlogs.com/v1/reports/guild/Attitude/Arthas/us?api_key=83cd4d911aecbd720692c99e4eda5e35')
+        logs = urllib.request.urlopen('https://www.warcraftlogs.com:443/v1/reports/guild/Lads/Illidan/us?api_key=dda5ca9f0cfe5a832b869a5b193271d1')
         ljdata = json.load(logs)
-        await client.send_message(message.channel, 'Guild Page: https://www.warcraftlogs.com/guilds/214323\nLatest Log: https://www.warcraftlogs.com/reports/' + str(ljdata[len(ljdata) - 1]['id']))
+        await client.send_message(message.channel, 'Guild Page: https://www.warcraftlogs.com/guilds/339520\nLatest Log: https://www.warcraftlogs.com/reports/' + str(ljdata[len(ljdata) - 1]['id']))
     
     # Lists current week affixes, as well as next week's affixes
     if message.content.startswith(prefix + 'affix'):
