@@ -17,6 +17,7 @@ officersID = [
     '204420413814472704', #Alex
     '229757511715127296', #Sammy
     '218079956888977409', #Bruise
+    '90170201890394112'  #Nate
 ]
 
 #'90170201890394112',  #Nate
@@ -34,7 +35,9 @@ officer_role = '245636355311403008'
 ## Text Channel
 lads_text = '396058468479664138'
 
+## PREFIX IDENTIFIER ------------------------
 prefix = '!'
+# -------------------------------------------
 
 @client.event
 async def on_ready():
@@ -98,33 +101,6 @@ async def on_message(message):
         await client.delete_message(message)
 
 
- 
-    if message.content.startswith(prefix + 'select') and ('Officers' in roles):
-        officersID = ['204420413814472704','229757511715127296','218079956888977409']
-        print('officersID before select:')
-        print(officersID)
-        #await client.send_message(message.channel, message.author.id)  ## Debugging
-        #members = client.get_channel('336532282678575106').voice_members  
-        members = message.author.voice.voice_channel.voice_members
-        # returns a list of members in the specified channel
-        print('Length of members list: ' + str(len(members)))  ## Debugging
-        # Check to see if there are users before trying to select one
-        if (len(members) > 0):
-            ran_mem = random.randint(0,len(members)-1)
-            # This loop will be active as long as the selected person is an officer
-            # it will keep getting a new random int to select a new person until the new person is
-            # not in officersID. If also includes a debugging print statement
-            while (members[ran_mem].id in officersID):
-                print('ran_mem: ' + str(ran_mem))               ## Debugging: print the current random int
-                print('chosen: ' + str(members[ran_mem].name))  ## Debugging: print who was chosen
-                ran_mem = random.randint(0,len(members)-1)     # get new random int
-            # Out of loop, selected member must NOT be in officerID already
-            print(str(members[ran_mem].nick))
-            await client.send_message(message.channel, str(members[ran_mem].name) + ' has been choosen!')
-            officersID.append(str(members[ran_mem].id))
-            print(officersID)   ## Debugging
-        # END IF
-
     if message.content.startswith(prefix + 'reset') and ('Officers' in roles):
         officersID = ['204420413814472704','229757511715127296','218079956888977409']
         print('LC reset')
@@ -182,6 +158,7 @@ async def on_message(message):
                 else:
                     enabled = True
 
+    # Handle all other commands in dictionary list
     if message.content.startswith(prefix):
         print(message.content)
         terms = message.content[1:].split()
