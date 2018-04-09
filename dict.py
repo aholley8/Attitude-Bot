@@ -18,7 +18,16 @@ class DictionaryReader:
             return
     
     def readDict(self, entry):
+        if entry == 'more':
+            return self.readKeys()
         if entry in self.dictionary:
-            return str(self.dictionary[entry])
-        return str("")
+            return str(self.dictionary[entry][1])
+        return str("Command not found. Use _*!help*_ to list available commands")
+
+    def readKeys(self):
+        listKeys = "```"
+        for key in self.dictionary.keys():
+            listKeys += '!' + key + ' - ' + self.dictionary[key][0] + '\n'
+        listKeys += "```"
+        return listKeys
 
