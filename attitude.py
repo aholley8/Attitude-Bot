@@ -42,6 +42,7 @@ prefix = '!'
 # -------------------
 revolver = [0,0,0,0,0,0]
 index = 0
+# -------------------
 
 @client.event
 async def on_ready():
@@ -167,7 +168,7 @@ async def on_message(message):
                 #await message.channel.send('*click*')
             index += 1
         else:
-            await client.send_message(message.channel,('Time to reload, use !Spin to reload!')
+            await client.send_message(message.channel,'Time to reload, use !Spin to reload!')
             #await message.channel.send('Time to reload, use !spin to reload')
 
     # Russian Roulette helper
