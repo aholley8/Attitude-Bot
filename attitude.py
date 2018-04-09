@@ -35,14 +35,11 @@ officer_role = '245636355311403008'
 ## Text Channel
 lads_text = '396058468479664138'
 
-## PREFIX IDENTIFIER ------------------------
+## Setup variables -------------------------
 prefix = '!'
-# -------------------------------------------
-
-# -------------------
 revolver = [0,0,0,0,0,0]
 index = 0
-# -------------------
+# -------------------------------------------
 
 @client.event
 async def on_ready():
@@ -58,7 +55,7 @@ async def on_message(message):
     global index
 
     # Ignore and messages made by the bot
-    if message.author == client.user:
+    if message.author.bot:
         return
 
     # Ignore any message that does not have the prefix
@@ -88,7 +85,7 @@ async def on_message(message):
             '\n!raid - oves all online users to raid channel.```'
             )
 
-    elif (message.content.startswith(prefix+'raid')) and ('Officers' in roles):
+    elif (message.content.startswith(prefix+'summon')) and ('Officers' in roles):
         await client.send_message(message.channel,'placeholder')
 
     elif (message.content.startswith(prefix+'up')) and ('Officers' in roles): 
@@ -134,8 +131,6 @@ async def on_message(message):
         now = datetime.now()+timedelta(hours=1)
         loop = True
         enabled = True
-
-
         # Check to see if an invasion is up or not
         while loop:
             if enabled:
@@ -155,6 +150,10 @@ async def on_message(message):
                     
                 else:
                     enabled = True
+
+# ----------------------------------------------------------------------------------------
+## Games section
+# ----------------------------------------------------------------------------------------
 
     # Russian Roulette Game!
     elif message.content.startswith(prefix+'roulette'):
@@ -179,10 +178,13 @@ async def on_message(message):
         await client.send_message(message.channel,'Reloaded!')
         #await message.channel.send('Reloaded!')
 
+# ----------------------------------------------------------------------------------------
+## Read Dictionary for additional commands
+# ----------------------------------------------------------------------------------------
 
     # Handle all other commands in dictionary list
     elif message.content.startswith(prefix):
-        print(message.content)
+        #print(message.content)
         terms = message.content[1:].split()
         command = terms[0].lower()
         msg = d.readDict(command)
