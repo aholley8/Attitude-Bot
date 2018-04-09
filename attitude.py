@@ -78,13 +78,6 @@ async def on_message(message):
 ## Available to Officers Only
 # ----------------------------------------------------------------------------------------
 
-    if (message.content.startswith(prefix+'officer')) and ('Officers' in roles): 
-        await client.send_message(client.get_channel(lads_text), '```Available commands for Officers:' 
-            '\n!up - moves Loot Council up to Officer chat' 
-            '\n!down - moves Loot Coucil back down to Raid Chat'
-            '\n!raid - oves all online users to raid channel.```'
-            )
-
     elif (message.content.startswith(prefix+'summon')) and ('Officers' in roles):
         await client.send_message(message.channel,'placeholder')
 
