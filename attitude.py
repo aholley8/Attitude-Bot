@@ -78,7 +78,7 @@ async def on_message(message):
 ## Available to Officers Only
 # ----------------------------------------------------------------------------------------
 
-    elif (message.content.startswith(prefix+'summon')) and ('Officers' in roles):
+    if (message.content.startswith(prefix+'summon')) and ('Officers' in roles):
         await client.send_message(message.channel,'placeholder')
 
     elif (message.content.startswith(prefix+'up')) and ('Officers' in roles): 
