@@ -104,8 +104,17 @@ async def on_message(message):
         logs = urllib.request.urlopen('https://www.warcraftlogs.com:443/v1/reports/guild/Lads/Illidan/us?api_key=dda5ca9f0cfe5a832b869a5b193271d1')
         ljdata = json.load(logs)
         await client.send_message(message.channel, 'Guild Page: https://www.warcraftlogs.com/guilds/339520\nLatest Log: https://www.warcraftlogs.com/reports/' + str(ljdata[len(ljdata) - 1]['id']))
-    
 
+
+    # Will display the current WoW Token price on AuctionHouse
+    elif message.content.startswith(prefix+'token'):
+        wowTokenRes = urllib.request.urlopen(baseURL+'data/wow/token/?namespace=dynamic-us&locale=en_US&access_token='+token)
+        #wowToken is an int representing the gold price of a token
+        wowToken = str(json.load(wowTokenRes)['price'])
+        length = len(wowToken)
+        await client.send_message(message.channel, 'Current WoW Token price is: ' + wowToken[:length-4]+'g '+wowToken[-4:-2]+'s '+wowToken[-2:]+'c')
+
+    
     # Lists current week affixes, as well as next week's affixes
     elif message.content.startswith(prefix + 'affix'):
         d1 = datetime(2017, 3, 28)
