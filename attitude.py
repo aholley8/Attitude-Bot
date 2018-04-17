@@ -10,6 +10,9 @@ from math import floor
 from affix import affixes
 from dict import DictionaryReader
 
+file = open("token.json",'r')
+tokenObj = json.load(file)
+file.close()
 
 client = discord.Client()
 
@@ -39,6 +42,7 @@ lads_text = '396058468479664138'
 prefix = '!'
 revolver = [0,0,0,0,0,0]
 index = 0
+baseURL = 'https://us.api.battle.net/'
 # -------------------------------------------
 
 @client.event
@@ -101,14 +105,14 @@ async def on_message(message):
 
     # List guild warcraft log page, and latest log
     elif message.content.startswith(prefix + 'logs'):
-        logs = urllib.request.urlopen('https://www.warcraftlogs.com:443/v1/reports/guild/Lads/Illidan/us?api_key=dda5ca9f0cfe5a832b869a5b193271d1')
+        logs = urllib.request.urlopen('https://www.warcraftlogs.com:443/v1/reports/guild/Lads/Illidan/us?api_key='+tokenObj['logsapi'])
         ljdata = json.load(logs)
         await client.send_message(message.channel, 'Guild Page: https://www.warcraftlogs.com/guilds/339520\nLatest Log: https://www.warcraftlogs.com/reports/' + str(ljdata[len(ljdata) - 1]['id']))
 
 
     # Will display the current WoW Token price on AuctionHouse
     elif message.content.startswith(prefix+'token'):
-        wowTokenRes = urllib.request.urlopen(baseURL+'data/wow/token/?namespace=dynamic-us&locale=en_US&access_token='+token)
+        wowTokenRes = urllib.request.urlopen(baseURL+'data/wow/token/?namespace=dynamic-us&locale=en_US&access_token='+tokenObj['apiToken'])
         #wowToken is an int representing the gold price of a token
         wowToken = str(json.load(wowTokenRes)['price'])
         length = len(wowToken)
@@ -196,9 +200,6 @@ async def on_message(message):
 
 #END IF
 
-file = open("token.json",'r')
-tokenObj = json.load(file)
-file.close()
 client.run(tokenObj['token'])
 
 #END FILE
