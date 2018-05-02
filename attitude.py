@@ -87,15 +87,16 @@ async def on_message(message):
         #await client.send_message(message.channel,'placeholder')
         Guild = message.server
         print(Guild)
-        print(Guild.channels)
+        #print(Guild.channels)
         for channel in Guild.channels:
             #do something
             print(channel)
             print(channel.voice_members)
-            if channel.name != 'Test':
-                for member in channel.members:
+            if channel.name != 'Raid':
+                for member in channel.voice_members:
                     print('Moving ' + member.display_name)
-                    await member.move_to(Guild.get_channel(399132956565700609))
+                    await client.move_member(Guild.get_member(member.id), client.get_channel(raid_voice))
+        await client.delete_message(message)
 
     elif (message.content.startswith(prefix+'up')) and ('Officers' in roles): 
         print(officersID)
