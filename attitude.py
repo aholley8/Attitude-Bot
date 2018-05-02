@@ -82,8 +82,20 @@ async def on_message(message):
 ## Available to Officers Only
 # ----------------------------------------------------------------------------------------
 
+    # can use this to move clients around in "guild" aka "server"
     if (message.content.startswith(prefix+'summon')) and ('Officers' in roles):
-        await client.send_message(message.channel,'placeholder')
+        #await client.send_message(message.channel,'placeholder')
+        Guild = message.server
+        print(Guild)
+        print(Guild.channels)
+        for channel in Guild.channels:
+            #do something
+            print(channel)
+            print(channel.voice_members)
+            if channel.name != 'Test':
+                for member in channel.members:
+                    print('Moving ' + member.display_name)
+                    await member.move_to(Guild.get_channel(399132956565700609))
 
     elif (message.content.startswith(prefix+'up')) and ('Officers' in roles): 
         print(officersID)
