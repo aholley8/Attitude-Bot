@@ -95,7 +95,7 @@ async def on_message(message):
             if channel.name != 'Raid':
                 for member in channel.voice_members:
                     print('Moving ' + member.display_name)
-                    await client.move_member(Guild.get_member(member.id), client.get_channel(raid_voice))
+                    await client.move_member(client.get_server(server_id).get_member(member.id), client.get_channel(raid_voice))
         await client.delete_message(message)
 
     elif (message.content.startswith(prefix+'up')) and ('Officers' in roles): 
@@ -145,9 +145,9 @@ async def on_message(message):
     # Shows current invasion status, and time until end or next invasion
     elif message.content.startswith(prefix + 'invasion'):
         #start = Mon july 10 2017 @ 6.30pm CST
-        start = datetime(2017, 7, 10, 18, 30)
+        start = datetime(2017, 7, 10, 23, 30, 0, 0, timezone.utc)
         # remove the timedelta when DST is over :P
-        now = datetime.now()+timedelta(hours=1)
+        now = datetime.now(timezone.utc)
         loop = True
         enabled = True
         # Check to see if an invasion is up or not
