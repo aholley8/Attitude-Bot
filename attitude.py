@@ -5,7 +5,7 @@ import asyncio
 import json
 import urllib.request
 import random
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from math import floor
 from affix import affixes
 from dict import DictionaryReader
