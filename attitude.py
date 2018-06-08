@@ -84,16 +84,13 @@ async def on_message(message):
 
     # can use this to move clients around in "guild" aka "server"
     if (message.content.startswith(prefix+'summon')) and ('Officers' in roles):
-        #await client.send_message(message.channel,'placeholder')
         Guild = message.server
         print(Guild)
-        #print(Guild.channels)
         for channel in Guild.channels:
-            #do something
             print(channel)
-            print(channel.voice_members)
             if channel.name != 'Raid':
-                for member in channel.voice_members:
+                print(channel.voice_members)
+                for member in list(channel.voice_members):
                     print('Moving ' + member.display_name)
                     await client.move_member(client.get_server(server_id).get_member(member.id), client.get_channel(raid_voice))
         await client.delete_message(message)
