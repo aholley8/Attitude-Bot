@@ -1,7 +1,7 @@
 {
             "help": ["List of general commands","```Available Commands:\n!logs - Guild Warcraft logs\n!affix - List of current and next week's Mythic+ affixes\n!invasion - Displays the time until end of current invasion, or until the start of the next\n!token - Dislays current price of WoW Token\n!more - list of additional commands (mainly links)```"],
             "officer": ["List of officer only commands","```Available commands for officers:\n!up - moves Loot Council up\n!down - moves Loot Council down\n!summon - moves any connected voice user to raid channel```"],
-            "stream": ["List of guild streamers","Guildies that stream:\nTuggy: <https://www.twitch.tv/definitelynottuggy>\nGummy: <https://www.twitch.tv/TheGumSpot>\nNightzwatch: <https://www.twitch.tv/wootwookerz>\nSicklikeney: <https://www.twitch.tv/chyaboineymar>\nBruise: <https://www.twitch.tv/bruise116>\nPeachy: <https://www.twitch.tv/peachschnapz>\nMessage Tuggy to add yours!"],
+            "stream": ["List of guild streamers","Guildies that stream:\nTuggy: <https://www.twitch.tv/definitelynottuggy>\nGummy: <https://www.twitch.tv/TheGumSpot>\nNightzwatch: <https://www.twitch.tv/wootwookerz>\nNeyjin: <https://www.twitch.tv/chyaboineymar>\nBruise: <https://www.twitch.tv/bruise116>\nPeachy: <https://www.twitch.tv/peachschnapz>\nMessage Tuggy to add yours!"],
             "blood": ["Link to site for blood prices","<https://rodent.io/blood-money/arthas>\n<https://rodent.io/blood-money/illidan>"],
             "stop": ["It's time to stop","https://www.youtube.com/watch?v=2k0SmqbBIpQ"],
             "why": ["Why vine","https://www.youtube.com/watch?v=sluHwh3hJhI"],
@@ -14,7 +14,9 @@
     "hagrid": ["Feeling like Hagrid","https://i.imgur.com/eW6Gfbf.jpg"],
     "wizard": ["Yer a wizard Harry","https://www.youtube.com/watch?v=szXWNwO64Yw"],
     "meat": ["Beatin that meat","https://i.imgur.com/ZdHmY8M.gifv"],
-    "work": ["Time to get to work","https://www.youtube.com/watch?v=Ncoec9lsbCQ"]
+    "work": ["Time to get to work","https://www.youtube.com/watch?v=Ncoec9lsbCQ"],
+    "trap": ["I wonder...","https://i.imgur.com/UlVpl8w.png"],
+    "jpeg": ["Do I look like I know?","https://www.youtube.com/watch?v=QEzhxP-pdos"]
 }
 
 
