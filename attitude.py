@@ -1,5 +1,3 @@
-
-
 import discord
 import asyncio
 import json
@@ -7,7 +5,6 @@ import urllib.request
 import random
 from datetime import datetime, timedelta, timezone
 from math import floor
-from affix import affixes
 from dict import DictionaryReader
 
 file = open("token.json",'r')
@@ -16,17 +13,6 @@ file.close()
 
 client = discord.Client()
 
-officersID = [
-    '204420413814472704', #Alex
-    '229757511715127296', #Sammy
-    '218079956888977409', #Bruise
-    '90170201890394112'  #Nate
-]
-
-#'90170201890394112',  #Nate
-#'216036936433795084', #Caleb
-#'187392035890659328', #Gummy
-#'229981371928412160', #Kyo
 
 ## IDs for Attitude
 server_id = '245634401046626304' 
@@ -77,38 +63,6 @@ async def on_message(message):
     except:
         pass
 
-
-# ----------------------------------------------------------------------------------------
-## Available to Officers Only
-# ----------------------------------------------------------------------------------------
-
-    # can use this to move clients around in "guild" aka "server"
-    if (message.content.startswith(prefix+'summon')) and ('Officers' in roles):
-        Guild = message.server
-        print(Guild)
-        for channel in Guild.channels:
-            print(channel)
-            if channel.name != 'Raid':
-                print(channel.voice_members)
-                for member in list(channel.voice_members):
-                    print('Moving ' + member.display_name)
-                    await client.move_member(client.get_server(server_id).get_member(member.id), client.get_channel(raid_voice))
-        await client.delete_message(message)
-
-    elif (message.content.startswith(prefix+'up')) and ('Officers' in roles): 
-        print(officersID)
-        for x in officersID:
-            #print(officersID)
-            # Moves everyone in officersID list to Officer channel 
-            await client.move_member(client.get_server(server_id).get_member(x), client.get_channel(lads_voice))
-        await client.delete_message(message)
-
-    elif (message.content.startswith(prefix+'down')) and ('Officers' in roles) :
-        for x in officersID:
-            # Moves everyone in officersID list to Raid channel 
-            await client.move_member(client.get_server(server_id).get_member(x), client.get_channel(raid_voice))
-        await client.delete_message(message)
-
 # ----------------------------------------------------------------------------------------
 ## Available to everyone else
 # ----------------------------------------------------------------------------------------
@@ -129,44 +83,6 @@ async def on_message(message):
         await client.send_message(message.channel, 'Current WoW Token price is: ' + wowToken[:length-4]+'g '+wowToken[-4:-2]+'s '+wowToken[-2:]+'c')
 
     
-    # Lists current week affixes, as well as next week's affixes
-    elif message.content.startswith(prefix + 'affix'):
-        d1 = datetime(2017, 3, 28)
-        d2 = datetime.now()
-        currentAffix = affixes[floor(((d2 - d1).days / 7) % 12)]
-        nextAffix = affixes[floor((((d2 - d1).days / 7) + 1) % 12)]
-        output = 'This weeks affixes are: {}, {}, {}\nNext weeks affixes are: {}, {}, {}'.format(currentAffix[0], currentAffix[1], currentAffix[2],nextAffix[0], nextAffix[1], nextAffix[2])
-        await client.send_message(message.channel, output)
-
-
-    # Shows current invasion status, and time until end or next invasion
-    elif message.content.startswith(prefix + 'invasion'):
-        #start = Mon july 10 2017 @ 6.30pm CST
-        start = datetime(2017, 7, 10, 23, 30, 0, 0, timezone.utc)
-        # remove the timedelta when DST is over :P
-        now = datetime.now(timezone.utc)
-        loop = True
-        enabled = True
-        # Check to see if an invasion is up or not
-        while loop:
-            if enabled:
-                start = start + timedelta(hours=6)
-                if now < start: # Exits loop, invasion is happening
-                    loop = False
-                    nexttime = start - now
-                    await client.send_message(message.channel,"There is an invasion active now!\nTime left: " + str(nexttime).split('.',2)[0])
-                else:
-                    enabled = False
-            else:
-                start = start + timedelta(hours=12, minutes=30)
-                if now < start: # Exits loop, invasion not happening
-                    loop = False
-                    nexttime = start-now
-                    await client.send_message(message.channel,"There is no invasion active.\nTime until next invasion: " + str(nexttime).split('.',2)[0])
-                    
-                else:
-                    enabled = True
-
 # ----------------------------------------------------------------------------------------
 ## Games section
 # ----------------------------------------------------------------------------------------
